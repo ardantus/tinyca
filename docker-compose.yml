@@ -1,0 +1,74 @@
+services:
+  step-ca:
+    image: smallstep/step-ca
+    container_name: step-ca
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    networks:
+      - tinyca-net
+    ports:
+      - "9000:9000"
+    environment:
+      - DOCKER_STEPCA_INIT_NAME=TinyCA
+      - DOCKER_STEPCA_INIT_DNS_NAMES=localhost,tinyca.lan,ca.lan,step-ca
+      - DOCKER_STEPCA_INIT_PROVISIONER_NAME=admin
+      - DOCKER_STEPCA_INIT_PASSWORD_FILE=/home/step/secrets/password
+    volumes:
+      - ./step-ca-data:/home/step
+      - ./secrets:/home/step/secrets
+
+  # 1. Ephemeral container to Initialize ACME provisioner
+  acme-init:
+    image: smallstep/step-cli
+    container_name: acme-init
+    depends_on:
+      - step-ca
+    networks:
+      - tinyca-net
+    volumes:
+      - ./scripts/init_acme.sh:/init_acme.sh
+      - ./step-ca-data:/home/step # To read config
+    entrypoint: ["/bin/bash", "/init_acme.sh"]
+
+  # 2. Webserver to demonstrate SSL
+  nginx:
+    image: nginx:alpine
+    container_name: tinyca-nginx
+    restart: unless-stopped
+    depends_on:
+      - cert-renewer
+    networks:
+      - tinyca-net
+    command: >
+      /bin/sh -c "while [ ! -f /data/certs/www.tinyca.lan.crt ]; do echo 'Waiting for cert...'; sleep 1; done; nginx -g 'daemon off;'"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - certs-data:/data/certs:ro
+
+  # 3. Sidecar to issue & renew certs for Nginx
+  cert-renewer:
+    image: smallstep/step-cli
+    container_name: cert-renewer
+    restart: unless-stopped
+    user: root
+    networks:
+      - tinyca-net
+    depends_on:
+      - step-ca
+    volumes:
+      - ./scripts/renew_certs.sh:/renew_certs.sh
+      - ./secrets:/home/step/secrets:ro # To access password for issuing
+      - ./step-ca-data:/home/step:ro # To get root_ca.crt
+      - certs-data:/data/certs
+    entrypoint: ["/bin/bash", "/renew_certs.sh"]
+
+networks:
+  tinyca-net:
+    driver: bridge
+
+volumes:
+  certs-data:

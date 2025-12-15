@@ -1,0 +1,13 @@
+# Credentials and Secrets
+secrets/
+
+# CA Data (Database, Keys, Certs)
+step-ca-data/
+
+# Docker volumes if mapped locally (certs-data is a named volume, but just in case)
+certs-data/
+
+# OS/IDE
+.DS_Store
+.vscode/
+.idea/
