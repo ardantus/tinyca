@@ -39,7 +39,7 @@ tinyca/
 ### 1. Setup Password
 **CRITICAL**: Change the default password before starting.
 ```bash
-echo "Rahasia.33" > secrets/password
+echo "SangatRahasiaBanget" > secrets/password
 chmod 600 secrets/password
 ```
 > [!WARNING]
