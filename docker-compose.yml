@@ -47,7 +47,9 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/html:/usr/share/nginx/html:ro
       - certs-data:/data/certs:ro
+      - ./step-ca-data/certs/root_ca.crt:/data/root_ca.crt:ro
 
   # 3. Sidecar to issue & renew certs for Nginx
   cert-renewer:

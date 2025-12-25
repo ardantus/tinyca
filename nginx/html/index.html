@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyCA - Private Certificate Authority</title>
+    <meta name="description"
+        content="TinyCA - Manage your private Certificate Authority. Download Root CA certificate and view registered domains.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+                        <path d="M9 12l2 2 4-4" />
+                    </svg>
+                </div>
+                <span class="logo-text">TinyCA</span>
+            </div>
+            <nav class="nav">
+                <a href="#download" class="nav-link">Download</a>
+                <a href="#domains" class="nav-link">Domains</a>
+                <a href="#docs" class="nav-link">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="badge">🔐 Private PKI Infrastructure</div>
+                    <h1>Your Private<br><span class="gradient-text">Certificate Authority</span></h1>
+                    <p class="hero-description">
+                        Secure your internal services with trusted SSL certificates.
+                        No external dependencies, complete control over your PKI.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#download" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Download Root CA
+                        </a>
+                        <a href="#domains" class="btn btn-secondary">View Domains</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="cert-card">
+                        <div class="cert-header">
+                            <div class="cert-icon">🛡️</div>
+                            <div class="cert-info">
+                                <span class="cert-label">Root Certificate</span>
+                                <span class="cert-name" id="caName">TinyCA</span>
+                            </div>
+                        </div>
+                        <div class="cert-details">
+                            <div class="cert-row">
+                                <span class="cert-key">Fingerprint</span>
+                                <code class="cert-value" id="fingerprint">Loading...</code>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-key">Valid Until</span>
+                                <span class="cert-value" id="validUntil">Loading...</span>
+                            </div>
+                            <div class="cert-row">
+                                <span class="cert-key">Status</span>
+                                <span class="cert-status active" id="caStatus">
+                                    <span class="status-dot"></span>
+                                    Checking...
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section class="download-section" id="download">
+            <div class="container">
+                <h2 class="section-title">Install Root Certificate</h2>
+                <p class="section-subtitle">
+                    Trust certificates issued by TinyCA by installing the Root CA on your devices
+                </p>
+
+                <div class="download-card glass-card">
+                    <div class="download-main">
+                        <div class="download-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <path d="M12 18v-6" />
+                                <path d="M9 15l3 3 3-3" />
+                            </svg>
+                        </div>
+                        <div class="download-info">
+                            <h3>root_ca.crt</h3>
+                            <p>X.509 Certificate (PEM format)</p>
+                        </div>
+                        <a href="/root_ca.crt" download="tinyca_root.crt" class="btn btn-primary btn-download">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Download
+                        </a>
+                    </div>
+                </div>
+
+                <div class="install-grid">
+                    <div class="install-card glass-card">
+                        <div class="install-header">
+                            <span class="os-icon">🪟</span>
+                            <h4>Windows</h4>
+                        </div>
+                        <ol class="install-steps">
+                            <li>Double-click <code>root_ca.crt</code></li>
+                            <li>Click "Install Certificate"</li>
+                            <li>Select "Local Machine"</li>
+                            <li>Choose "Trusted Root Certification Authorities"</li>
+                            <li>Click Finish</li>
+                        </ol>
+                    </div>
+
+                    <div class="install-card glass-card">
+                        <div class="install-header">
+                            <span class="os-icon">🍎</span>
+                            <h4>macOS</h4>
+                        </div>
+                        <ol class="install-steps">
+                            <li>Open Keychain Access</li>
+                            <li>Drag <code>root_ca.crt</code> to System keychain</li>
+                            <li>Double-click the certificate</li>
+                            <li>Expand "Trust" section</li>
+                            <li>Set to "Always Trust"</li>
+                        </ol>
+                    </div>
+
+                    <div class="install-card glass-card">
+                        <div class="install-header">
+                            <span class="os-icon">🐧</span>
+                            <h4>Linux</h4>
+                        </div>
+                        <div class="install-code">
+                            <code>
+sudo cp root_ca.crt /usr/local/share/ca-certificates/tinyca.crt
+sudo update-ca-certificates
+                            </code>
+                        </div>
+                    </div>
+
+                    <div class="install-card glass-card">
+                        <div class="install-header">
+                            <span class="os-icon">🌐</span>
+                            <h4>Firefox</h4>
+                        </div>
+                        <ol class="install-steps">
+                            <li>Open Settings → Privacy & Security</li>
+                            <li>Scroll to "Certificates"</li>
+                            <li>Click "View Certificates"</li>
+                            <li>Import <code>root_ca.crt</code></li>
+                            <li>Check "Trust for websites"</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Domains Section -->
+        <section class="domains-section" id="domains">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Registered Domains</h2>
+                        <p class="section-subtitle">Certificates issued by this CA</p>
+                    </div>
+                    <button class="btn btn-secondary" id="refreshDomains" onclick="loadCertificates()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6" />
+                            <path d="M1 20v-6h6" />
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+
+                <!-- Search and Sort Controls -->
+                <div class="domains-controls">
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search domains..." oninput="handleSearch()">
+                    </div>
+                    <button class="btn btn-secondary sort-btn" id="sortBtn" onclick="toggleSort()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="sortIcon">
+                            <path d="M12 5v14M5 12l7 7 7-7" />
+                        </svg>
+                        <span id="sortLabel">Valid Until ↓</span>
+                    </button>
+                </div>
+
+                <div class="domains-table-wrapper glass-card">
+                    <table class="domains-table" id="domainsTable">
+                        <thead>
+                            <tr>
+                                <th>Domain</th>
+                                <th>Serial Number</th>
+                                <th>Valid From</th>
+                                <th class="sortable" onclick="toggleSort()">
+                                    Valid Until
+                                    <span class="sort-indicator" id="thSortIndicator">↓</span>
+                                </th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="domainsBody">
+                            <tr class="loading-row">
+                                <td colspan="5">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading certificates...</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <button class="btn btn-secondary btn-pagination" id="prevBtn" onclick="prevPage()" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6" />
+                        </svg>
+                        Prev
+                    </button>
+                    <div class="page-info">
+                        <span id="pageInfo">Page 1 of 1</span>
+                        <span class="total-items" id="totalItems">(0 items)</span>
+                    </div>
+                    <button class="btn btn-secondary btn-pagination" id="nextBtn" onclick="nextPage()" disabled>
+                        Next
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="domains-info">
+                    <p>💡 Certificates are automatically renewed by the cert-renewer service</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Docs Section -->
+        <section class="docs-section" id="docs">
+            <div class="container">
+                <h2 class="section-title">Quick Reference</h2>
+
+                <div class="docs-grid">
+                    <div class="doc-card glass-card">
+                        <h4>🔗 ACME Directory</h4>
+                        <code class="doc-code">https://tinyca.lan:9000/acme/acme/directory</code>
+                        <p>Use with Certbot, Traefik, or any ACME client</p>
+                    </div>
+
+                    <div class="doc-card glass-card">
+                        <h4>📜 Request Certificate (CLI)</h4>
+                        <code class="doc-code">step ca certificate mydomain.lan cert.crt key.key</code>
+                        <p>Manual certificate issuance using step CLI</p>
+                    </div>
+
+                    <div class="doc-card glass-card">
+                        <h4>🃏 Wildcard Certificate</h4>
+                        <code
+                            class="doc-code">docker exec step-ca step ca certificate "*.tinyca.lan" wildcard.crt wildcard.key --provisioner admin</code>
+                        <p>Issue wildcard for all subdomains</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>TinyCA &copy; 2025 | Powered by <a href="https://smallstep.com/docs/step-ca" target="_blank">step-ca</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

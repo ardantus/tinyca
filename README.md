@@ -8,12 +8,16 @@ A lightweight, Docker-based Private Certificate Authority (CA) designed for home
 *   **Automated**: ACME protocol support for seamless integration with Traefik, Caddy, or Nginx.
 *   **Private**: Complete control over your PKI. Keys never leave your network.
 *   **Simple**: Easy to bootstrap and backup.
+*   **Web UI**: Modern dashboard to download Root CA and view registered domains.
 
 ## 📂 Project Structure
 
 ```text
 tinyca/
 ├── docker-compose.yml       # Service definition
+├── nginx/
+│   ├── conf.d/              # Nginx configuration
+│   └── html/                # Web UI (index.html, styles.css, app.js)
 ├── secrets/
 │   └── password             # Password for CA keys (PROTECT THIS FILE)
 ├── step-ca-data/            # Persistent storage (Database, Config, Keys)
@@ -66,11 +70,13 @@ Menambahkan Fitur ACME: Secara default, saat baru diinstall, step-ca belum menga
 
 
 
-### 4. Verify Nginx SSL
-We have included an Nginx service (`www.tinyca.lan`) that automatically gets a certificate.
+### 4. Access Web UI
+We have included a Web UI served by Nginx (`www.tinyca.lan`) that automatically gets a certificate.
 1. Add `127.0.0.1 www.tinyca.lan` to your hosts file.
 2. Visit `https://www.tinyca.lan` in your browser.
    - If you installed the Root CA (see below), it should be Secure!
+   - You can download the Root CA certificate directly from the UI.
+   - View all registered domains and their certificate status.
 
 ### 5. Customizing Certificate Details (O, OU, Validity)
 To change the Organization (O), Organizational Unit (OU), or Validity (e.g. 90 days or 365 days):
